@@ -2407,3 +2407,22 @@ select.form-control-input {
     grid-template-columns: 1fr;
   }
 }
+
+/* Screen Shake for Critical Threat Battle Arena */
+@keyframes shake-arena {
+  0% { transform: translate(0, 0); }
+  10% { transform: translate(-5px, 3px); }
+  20% { transform: translate(5px, -3px); }
+  30% { transform: translate(-3px, -5px); }
+  40% { transform: translate(3px, 5px); }
+  50% { transform: translate(-5px, 3px); }
+  60% { transform: translate(5px, -3px); }
+  70% { transform: translate(-3px, 3px); }
+  80% { transform: translate(3px, -3px); }
+  90% { transform: translate(-1.5px, 1.5px); }
+  100% { transform: translate(0, 0); }
+}
+
+.battle-arena.shake {
+  animation: shake-arena 0.5s ease-in-out;
+}

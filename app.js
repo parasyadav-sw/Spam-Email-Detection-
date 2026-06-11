@@ -468,6 +468,7 @@ function triggerCyberBattle(text, result) {
   const title = elements.battleTitle;
   const subtitle = elements.battleSubtitle;
   const scanner = document.querySelector(".battle-scanner");
+  const arena = overlay ? overlay.querySelector(".battle-arena") : null;
 
   overlay.className = "cyber-battle-overlay active";
   shield.className = "battle-entity shield-entity";
@@ -479,6 +480,10 @@ function triggerCyberBattle(text, result) {
   laser.style.left = "142px";
   laser.style.opacity = "0";
   shockwave.className = "battle-shockwave";
+
+  if (arena) {
+    arena.classList.remove("shake");
+  }
 
   if (scanner) {
     scanner.classList.remove("active");
@@ -494,31 +499,28 @@ function triggerCyberBattle(text, result) {
     particleAnimationId = null;
   }
 
+  // Virus threat icon (email threat)
+  const virusSvg = `
+    <svg class="threat-svg virus-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+      <circle cx="12" cy="12" r="6" fill="currentColor" fill-opacity="0.1" />
+      <path d="M9.5 10h.01M14.5 10h.01M9 14c.5 1.5 2.5 1.5 3 0" />
+    </svg>
+  `;
+
+  // Initially populate threat container with the virus icon representing the threat
+  threatIconContainer.innerHTML = virusSvg;
+
   if (category === "safe") {
-    threatIconContainer.innerHTML = `
-      <svg class="threat-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    `;
     threat.classList.add("safe");
     if (scanner) scanner.classList.add("active");
     title.textContent = "AI Security Verification";
     subtitle.textContent = "Verifying email header metadata and token integrity...";
   } else if (category === "spam") {
-    threatIconContainer.innerHTML = `
-      <svg class="threat-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-      </svg>
-    `;
     threat.classList.add("spam");
     title.textContent = "Anomalies Flagged";
     subtitle.textContent = "Analyzing probability vectors and URL ratings...";
   } else {
-    threatIconContainer.innerHTML = `
-      <svg class="threat-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-      </svg>
-    `;
     threat.classList.add("critical");
     title.textContent = "High Risk Identified";
     subtitle.textContent = "Exploit footprint or spam payload detected...";
@@ -540,11 +542,13 @@ function triggerCyberBattle(text, result) {
       title.textContent = "AI Shield Active";
       subtitle.textContent = "Analyzing reputation weights...";
     } else {
+      // Critical threat intense defense sequence (laser + screen shake)
       laser.className = "battle-laser active-orange";
       laser.style.left = "142px";
       laser.style.width = "266px";
       laser.style.opacity = "1";
       shield.classList.add("defending");
+      if (arena) arena.classList.add("shake");
       title.textContent = "AI Isolating Threats";
       subtitle.textContent = "Filtering phishing vectors...";
     }
@@ -555,22 +559,35 @@ function triggerCyberBattle(text, result) {
       if (scanner) scanner.classList.remove("active");
       title.textContent = "Email Verified";
       subtitle.textContent = "Zero anomalies found. Sandbox safe.";
+      // Safe email verified: virus icon resolves/transforms into a checkmark icon
+      threatIconContainer.innerHTML = `
+        <svg class="threat-svg check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      `;
       startExplosion(443, 200, 35, ["rgba(52, 211, 153, alpha)", "rgba(59, 130, 246, alpha)", "rgba(251, 113, 133, alpha)"], 0.8);
     } else if (category === "spam") {
+      // Spam: shield destroys the virus icon
       laser.style.opacity = "0";
       threat.style.transform = "scale(0)";
       threat.style.opacity = "0";
       shockwave.classList.add("active");
-      title.textContent = "Isolating Text Content";
+      title.textContent = "Threat Neutralized";
       subtitle.textContent = "Spam tags appended to local model storage.";
       startExplosion(443, 200, 55, ["rgba(249, 115, 22, alpha)", "rgba(251, 113, 133, alpha)", "rgba(59, 130, 246, alpha)"]);
     } else {
+      // Critical threat destroyed sequence (arena shake + massive explosion)
       laser.style.opacity = "0";
       shield.classList.remove("defending");
       threat.style.transform = "scale(0)";
       threat.style.opacity = "0";
       shockwave.classList.add("active", "critical");
-      title.textContent = "Threat Deflected";
+      if (arena) {
+        arena.classList.remove("shake");
+        void arena.offsetWidth; // trigger reflow
+        arena.classList.add("shake");
+      }
+      title.textContent = "Critical Threat Blocked";
       subtitle.textContent = "Dangerous links isolated. Input labeled spam.";
       startExplosion(443, 200, 85, ["rgba(251, 113, 133, alpha)", "rgba(249, 115, 22, alpha)", "rgba(255, 255, 255, alpha)"], 1.2);
     }
@@ -582,9 +599,9 @@ function triggerCyberBattle(text, result) {
     if (voiceEnabled) {
       let threatPhrase = "";
       if (category === "critical") {
-        threatPhrase = "High risk detected. Avoid clicking any links.";
+        threatPhrase = "Critical threat blocked. Dangerous links isolated.";
       } else if (category === "spam") {
-        threatPhrase = "Content matches spam profile.";
+        threatPhrase = "Threat neutralized. Content classified as spam.";
       } else {
         threatPhrase = "Email is verified as safe.";
       }
@@ -594,6 +611,7 @@ function triggerCyberBattle(text, result) {
 
   setTimeout(() => {
     overlay.classList.remove("active");
+    if (arena) arena.classList.remove("shake");
     toggleInputControls(false);
   }, 2600);
 }
@@ -1968,6 +1986,17 @@ function setupEventHandlers() {
     lastSpokenText = "";
     runClassification();
   });
+
+  // Sandbox explicit scan trigger
+  const scanBtn = document.getElementById("scan-email-btn");
+  if (scanBtn) {
+    scanBtn.addEventListener("click", () => {
+      const text = elements.sandboxTextarea.value.trim();
+      if (!text) return;
+      isEmlScan = true;
+      runClassification();
+    });
+  }
 
   // EML drag and drop event listeners
   const dropZone = elements.emailDropZone;
