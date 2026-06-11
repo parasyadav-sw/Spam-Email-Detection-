@@ -696,6 +696,7 @@ function runClassification() {
 
   renderHighlightedText(text, result.wordProbabilities);
   inspectUrls(text);
+  presentClassificationResults(text, result);
 
   if (isEmlScan) {
     isEmlScan = false;
@@ -703,11 +704,16 @@ function runClassification() {
     triggerCyberBattle(text, result);
   } else {
     clearTimeout(battleDebounceTimeout);
-    battleDebounceTimeout = setTimeout(() => {
-      triggerCyberBattle(text, result);
-    }, 2000);
+    // Announce via voice assistant in real-time (with debounce to avoid chatter)
+    if (voiceEnabled) {
+      clearTimeout(voiceDebounceTimeout);
+      voiceDebounceTimeout = setTimeout(() => {
+        announceHealthReport(text, result);
+      }, 1500);
+    }
   }
 }
+
 
 function renderHighlightedText(originalText, wordProbabilities) {
   // Map word tokens to statistical info objects for quick lookup
