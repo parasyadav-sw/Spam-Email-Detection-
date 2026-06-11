@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Py AntiPhish — Advanced Email Spam Classifier Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Constellation Particle Background -->
+  <canvas id="bg-particles"></canvas>
+
+  <!-- Decorative Light-Theme Pastel Blobs -->
+  <div class="bg-blob bg-blob-1"></div>
+  <div class="bg-blob bg-blob-2"></div>
+  <div class="bg-blob bg-blob-3"></div>
+
+  <!-- Sidebar Navigation -->
+  <aside>
+    <div class="logo-container">
+      <div class="logo-icon">P</div>
+      <div class="logo-text">
+        <h1>Py AntiPhish</h1>
+        <span>Anti-Phishing Engine</span>
+      </div>
+    </div>
+    
+    <nav>
+      <ul class="menu">
+        <li>
+          <a class="menu-item active" data-tab="sandbox">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+            </svg>
+            <span>Sandbox Classifier</span>
+          </a>
+        </li>
+        <li>
+          <a class="menu-item" data-tab="dataset">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+            </svg>
+            <span>Dataset Manager</span>
+          </a>
+        </li>
+        <li>
+          <a class="menu-item" data-tab="vocabulary">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+            <span>Word Vocabulary</span>
+          </a>
+        </li>
+        <li>
+          <a class="menu-item" data-tab="analytics">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2h2a2 2 0 002-2zm12 0v-3a2 2 0 00-2-2h-2a2 2 0 00-2 2v3a2 2 0 002 2h2a2 2 0 002-2zm0 0V5a2 2 0 00-2-2h-2a2 2 0 00-2 2v14a2 2 0 002 2h2a2 2 0 002-2z" />
+            </svg>
+            <span>Analytics Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a class="menu-item" data-tab="settings">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span>Model Settings</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    
+    <!-- Model Status Card -->
+    <div class="model-status-card">
+      <div class="status-header">
+        <span>Engine Status</span>
+        <div class="status-indicator">
+          <div class="status-dot"></div>
+          <span>Active</span>
+        </div>
+      </div>
+      <div class="model-stat-row">
+        <span>Training Samples</span>
+        <span id="sidebar-train-count">0</span>
+      </div>
+      <div class="model-stat-row">
+        <span>Vocabulary Words</span>
+        <span id="sidebar-vocab-count">0</span>
+    </div>
+  </div>
+
+    <!-- JARVIS Voice Assistant Card -->
+    <div class="voice-assistant-card">
+      <div class="voice-header">
+        <span>Voice Protocol</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="voice-alert-toggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="voice-body">
+        <div class="reactor-container">
+          <div class="reactor-visual" id="voice-reactor">
+            <div class="reactor-ring-outer"></div>
+            <div class="reactor-ring-inner"></div>
+            <div class="reactor-core"></div>
+            <div class="reactor-beam"></div>
+          </div>
+        </div>
+        <div class="voice-status-wrapper">
+          <span class="voice-status-text" id="voice-status-text">Protocol Standby</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main>
+    <header>
+      <div class="header-title">
+        <h2 id="tab-heading-title">Sandbox Classifier</h2>
+        <p id="tab-heading-desc">Input raw email contents to analyze spam risk and explore individual word probabilities.</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-secondary" id="theme-toggle-btn" title="Toggle Visual Theme" style="padding: 0.75rem;">
+          <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" style="width:18px;height:18px" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <!-- Will be populated dynamically via JS -->
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
+        <button class="btn" id="global-add-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" style="width:18px;height:18px" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          Add Training Sample
+        </button>
+      </div>
+    </header>
+
+    <!-- TAB 1: SANDBOX -->
+    <section id="sandbox-tab" class="tab-content active">
+      <div class="sandbox-grid">
+        <!-- Input section -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3 class="panel-title">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+              Email Content Input
+            </h3>
+            <span class="word-count" id="sandbox-word-count">0 words</span>
+          </div>
+          <div class="input-container">
+            <!-- EML file drop zone -->
+            <div class="drop-zone" id="email-drop-zone">
+              <svg xmlns="http://www.w3.org/2000/svg" style="width:36px;height:36px;color:var(--text-muted);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+              </svg>
+              <span>Drag & Drop <strong>.eml</strong> email file here or <span>browse files</span></span>
+              <input type="file" id="eml-file-input" accept=".eml" style="display:none;">
+            </div>
+
+            <textarea id="sandbox-textarea" class="sandbox-input" placeholder="Or type, paste, or draft an email here to classify it in real-time..." style="height: 160px;"></textarea>
+            <div class="sandbox-controls">
+              <button class="btn btn-secondary" id="clear-sandbox-btn">Clear Input</button>
+              <button class="btn" id="add-to-dataset-btn">Save to Dataset</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Column -->
+        <div class="sandbox-results-column">
+          <!-- Result section -->
+          <div class="panel result-card">
+            <div class="result-badge empty" id="spam-badge">No Input</div>
+            
+            <div class="gauge-wrapper">
+              <svg class="gauge-svg" viewBox="0 0 160 160">
+                <defs>
+                  <linearGradient id="spamGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#f87171" />
+                    <stop offset="100%" stop-color="#ef4444" />
+                  </linearGradient>
+                  <linearGradient id="hamGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#34d399" />
+                    <stop offset="100%" stop-color="#10b981" />
+                  </linearGradient>
+                </defs>
+                <circle class="gauge-track" cx="80" cy="80" r="70" />
+                <circle class="gauge-fill ham" id="gauge-progress" cx="80" cy="80" r="70" />
+              </svg>
+              <div class="gauge-text-container">
+                <span class="gauge-percent" id="gauge-percent">0%</span>
+                <span class="gauge-label" id="gauge-label">Spam Prob</span>
+              </div>
+            </div>
+
+            <div class="probability-details">
+              <div class="probability-row">
+                <span>Classifier Algorithm</span>
+                <span>Naive Bayes</span>
+              </div>
+              <div class="probability-row">
+                <span>Spam Log Score</span>
+                <span id="log-score-spam">-</span>
+              </div>
+              <div class="probability-row">
+                <span>Ham Log Score</span>
+                <span id="log-score-ham">-</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Email Health Report Panel -->
+          <div class="panel health-report-panel" id="health-report-panel" style="display: none;">
+            <div class="panel-header">
+              <h3 class="panel-title">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                Security Health Analysis
+              </h3>
+            </div>
+
+            <div class="health-score-container">
+              <div class="health-score-value-wrapper">
+                <span class="health-score-num" id="health-score-num">0</span>
+                <span class="health-score-label">Threat Index</span>
+              </div>
+              <span class="lbl-badge ham" id="health-status-badge">Safe</span>
+            </div>
+
+            <div class="health-progress-wrapper">
+              <div class="health-progress-bar">
+                <div class="health-progress-fill low" id="health-progress-fill"></div>
+              </div>
+            </div>
+
+            <!-- Detected Issues -->
+            <div class="report-section">
+              <h4 class="report-section-title">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                Identified Threat Vectors
+              </h4>
+              <ul class="report-issues-list" id="report-issues-list">
+                <!-- Dynamic items -->
+              </ul>
+            </div>
+
+            <!-- Recommendations -->
+            <div class="report-section">
+              <h4 class="report-section-title">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                Safety Recommendations
+              </h4>
+              <div class="recommendations-box low" id="recommendations-box">
+                <!-- Dynamic text -->
+              </div>
+            </div>
+
+            <!-- Report Actions -->
+            <div class="report-actions">
+              <button class="btn btn-secondary" id="copy-report-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                </svg>
+                Copy Report
+              </button>
+              <button class="btn btn-secondary" id="print-report-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                </svg>
+                Print
+              </button>
+              <button class="btn" id="download-pdf-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                PDF Export
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Highlights Overlay Panel -->
+      <div class="panel highlighter-container">
+        <h3 class="highlighter-title">Model-Driven Feature Visualization</h3>
+        <div class="highlighted-text-box" id="highlighted-view">
+          <span class="placeholder-msg">Start typing in the text area above to view interactive model weights. Red highlighted words indicate spam triggers, green indicates normal words, and hover over individual words to see probability rates.</span>
+        </div>
+      </div>
+
+      <!-- URL Inspector Panel -->
+      <div class="panel url-inspector-panel">
+        <div class="panel-header">
+          <h3 class="panel-title">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+            </svg>
+            Hyperlink Risk Inspector
+          </h3>
+          <span class="word-count" id="url-inspector-count">0 links detected</span>
+        </div>
+        <div class="url-list-container" id="url-inspector-list">
+          <div class="url-inspector-empty">
+            No links detected in the email body. Link reputation scan is clean.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: DATASET MANAGER -->
+    <section id="dataset-tab" class="tab-content">
+      <div class="panel">
+        <div class="action-bar">
+          <div class="search-wrapper">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input type="text" id="dataset-search" class="search-input" placeholder="Search emails in training dataset...">
+          </div>
+          
+          <div class="dataset-stats">
+            <div class="stat-pill">
+              Total: <strong id="ds-stat-total">0</strong>
+            </div>
+            <div class="stat-pill spam-pill">
+              Spam: <strong id="ds-stat-spam">0</strong>
+            </div>
+            <div class="stat-pill ham-pill">
+              Ham: <strong id="ds-stat-ham">0</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table" id="dataset-table">
+            <thead>
+              <tr>
+                <th style="width: 60px;">ID</th>
+                <th>Text Message</th>
+                <th style="width: 120px;">Label</th>
+                <th style="width: 100px; text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="dataset-table-body">
+              <!-- Filled via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="sandbox-controls" style="margin-top: 1.5rem;">
+          <button class="btn btn-secondary" id="reset-dataset-btn">Reset to Default Data</button>
+          <div style="display: flex; gap: 0.75rem;">
+            <button class="btn btn-secondary" id="import-btn">Import JSON</button>
+            <button class="btn btn-secondary" id="export-btn">Export Dataset</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: VOCABULARY -->
+    <section id="vocabulary-tab" class="tab-content">
+      <div class="panel">
+        <div class="action-bar">
+          <div class="search-wrapper">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input type="text" id="vocab-search" class="search-input" placeholder="Filter dictionary words...">
+          </div>
+          <span class="word-count" id="vocab-total-words">0 unique words learned</span>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table" id="vocab-table">
+            <thead>
+              <tr>
+                <th>Word</th>
+                <th style="width: 130px;">Spam Occurrences</th>
+                <th style="width: 130px;">Ham Occurrences</th>
+                <th style="width: 140px;">Spam Likelihood</th>
+                <th style="width: 140px;">Ham Likelihood</th>
+                <th style="width: 120px; text-align: right;">Spammy Ratio</th>
+              </tr>
+            </thead>
+            <tbody id="vocab-table-body">
+              <!-- Filled via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: ANALYTICS -->
+    <section id="analytics-tab" class="tab-content">
+      <div class="analytics-grid">
+        <!-- Metrics columns -->
+        <div style="display: flex; flex-direction: column; gap: 1.75rem;">
+          <div class="panel">
+            <div class="panel-header" style="margin-bottom: 1.25rem;">
+              <h3 class="panel-title">Model Evaluation Metrics</h3>
+              <button class="btn" id="run-cv-btn">Run 5-Fold Validation</button>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.5;">
+              Metrics are calculated dynamically by splitting the active dataset into 5 equal subsets (folds), training the model on 4 folds, testing on the 5th, and repeating across all folds. This provides an unbiased measure of generalization performance.
+            </p>
+            
+            <div class="metrics-cards">
+              <div class="metric-card">
+                <span class="metric-name">Accuracy</span>
+                <span class="metric-value" id="val-accuracy">-%</span>
+                <span class="metric-desc">Correct classifications overall</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-name">Precision</span>
+                <span class="metric-value" id="val-precision">-%</span>
+                <span class="metric-desc">Correctly classified spam ratio</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-name">Recall</span>
+                <span class="metric-value" id="val-recall">-%</span>
+                <span class="metric-desc">Correctly caught spam ratio</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-name">F1 Score</span>
+                <span class="metric-value" id="val-f1">-%</span>
+                <span class="metric-desc">Harmonic mean of precision & recall</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Confusion Matrix column -->
+        <div class="panel">
+          <h3 class="panel-title" style="margin-bottom: 1.5rem;">Confusion Matrix</h3>
+          
+          <div class="cm-container">
+            <div class="cm-axis-title predicted">Predicted Class</div>
+            
+            <div class="cm-labels-top">
+              <div></div>
+              <div class="spam-text">Spam</div>
+              <div class="ham-text">Ham (Not Spam)</div>
+            </div>
+
+            <div class="cm-row-wrapper">
+              <div class="cm-axis-title actual">Actual Class</div>
+              
+              <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 0.75rem;">
+                <!-- Row 1: Actual Spam -->
+                <div class="cm-row-wrapper">
+                  <div class="cm-label-left spam-text">Spam</div>
+                  <div class="cm-grid">
+                    <div class="cm-cell hit">
+                      <span class="cm-cell-name">True Positive (TP)</span>
+                      <span class="cm-cell-count" id="cm-tp">0</span>
+                      <span class="cm-cell-label spam-text">Hits Spam</span>
+                    </div>
+                    <div class="cm-cell miss">
+                      <span class="cm-cell-name">False Negative (FN)</span>
+                      <span class="cm-cell-count" id="cm-fn">0</span>
+                      <span class="cm-cell-label ham-text">Missed as Ham</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Row 2: Actual Ham -->
+                <div class="cm-row-wrapper">
+                  <div class="cm-label-left ham-text">Ham</div>
+                  <div class="cm-grid">
+                    <div class="cm-cell miss">
+                      <span class="cm-cell-name">False Positive (FP)</span>
+                      <span class="cm-cell-count" id="cm-fp">0</span>
+                      <span class="cm-cell-label spam-text">Flagged as Spam</span>
+                    </div>
+                    <div class="cm-cell hit">
+                      <span class="cm-cell-name">True Negative (TN)</span>
+                      <span class="cm-cell-count" id="cm-tn">0</span>
+                      <span class="cm-cell-label ham-text">Hits Ham</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: SETTINGS -->
+    <section id="settings-tab" class="tab-content">
+      <div class="panel">
+        <h3 class="panel-title" style="margin-bottom: 1.5rem;">Classifier Configuration</h3>
+        
+        <form class="settings-form" id="settings-form" onsubmit="event.preventDefault();">
+          <div class="form-group">
+            <label for="settings-alpha">Laplace Smoothing (Alpha)</label>
+            <span class="description">Smooths probability calculations to avoid zero probabilities for words not encountered in training. Standard: 1.0.</span>
+            <input type="number" id="settings-alpha" class="form-control-input" step="0.1" min="0.1" max="10.0" value="1.0">
+          </div>
+
+          <div class="form-group">
+            <label for="settings-min-len">Minimum Word Length</label>
+            <span class="description">Ignore words shorter than this limit to remove noise.</span>
+            <input type="number" id="settings-min-len" class="form-control-input" step="1" min="1" max="10" value="2">
+          </div>
+
+          <div class="form-group" style="margin-top: 0.5rem;">
+            <label class="toggle-switch">
+              <input type="checkbox" id="settings-lowercase" checked>
+              <span class="slider"></span>
+              <span>Case Insensitive Tokenization</span>
+            </label>
+            <span class="description" style="margin-left: 3.5rem;">Convert all text to lower case before tokenization so matches are case-insensitive.</span>
+          </div>
+
+          <div class="form-group" style="margin-top: 0.5rem;">
+            <label class="toggle-switch">
+              <input type="checkbox" id="settings-stopwords">
+              <span class="slider"></span>
+              <span>Strip Common Stop-Words</span>
+            </label>
+            <span class="description" style="margin-left: 3.5rem;">Filter out high-frequency generic words like 'the', 'is', 'on' that carry little semantic charge.</span>
+          </div>
+
+          <div style="margin-top: 1rem;">
+            <button class="btn" id="save-settings-btn">Apply Settings</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- Add Sample Modal -->
+  <div class="modal-overlay" id="add-sample-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Add Training Sample</h3>
+        <button class="close-btn" id="close-modal-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      
+      <div class="form-group" style="margin-bottom: 1.25rem;">
+        <label for="modal-textarea">Message Content</label>
+        <textarea id="modal-textarea" class="sandbox-input" style="height: 150px;" placeholder="Enter sample email or text message..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="modal-label">Classification Label</label>
+        <select id="modal-label" class="form-control-input" style="max-width: 100%; width: 100%;">
+          <option value="spam">Spam (Spam, phishing, scams, junk)</option>
+          <option value="ham">Ham (Legitimate, personal, work emails)</option>
+        </select>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="modal-cancel-btn">Cancel</button>
+        <button class="btn" id="modal-save-btn">Save & Train</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden File Input for JSON Imports -->
+  <input type="file" id="file-import-input" class="hidden-file-input" accept=".json">
+
+  <!-- Custom Cursors -->
+  <div class="cursor-dot" id="cursor-dot"></div>
+  <div class="cursor-glow" id="cursor-glow"></div>
+
+  <!-- Fullscreen Alert Overlay -->
+  <div class="spam-alert-flash" id="spam-alert-flash"></div>
+
+  <!-- Cinematic Cyber Battle Overlay -->
+  <div class="cyber-battle-overlay" id="cyber-battle-overlay">
+    <div class="battle-arena">
+      <div class="battle-scanner"></div>
+      <div class="battle-entities">
+        <!-- Shield Entity (Left) -->
+        <div class="battle-entity shield-entity" id="battle-shield">
+          <svg class="shield-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+          <div class="shield-energy-ring"></div>
+        </div>
+        
+        <!-- Energy Pulse / Laser line -->
+        <div class="battle-laser" id="battle-laser"></div>
+        
+        <!-- Threat/Virus Entity (Right) -->
+        <div class="battle-entity threat-entity" id="battle-threat">
+          <div id="battle-threat-icon-container"></div>
+        </div>
+      </div>
+      
+      <!-- Particle explosion container -->
+      <div class="battle-particles" id="battle-particles"></div>
+      
+      <!-- Shockwave circle -->
+      <div class="battle-shockwave" id="battle-shockwave"></div>
+      
+      <!-- Status text -->
+      <div class="battle-status">
+        <h2 class="battle-title" id="battle-title">AI Scanner Active</h2>
+        <p class="battle-subtitle" id="battle-subtitle">Analyzing mail envelope packet...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Core Javascript Controllers -->
+  <script src="particles.js"></script>
+  <script src="dataset.js"></script>
+  <script src="classifier.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
